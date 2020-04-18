@@ -30,13 +30,13 @@ class MainActivity : AppCompatActivity() {
                     navStatus = 0
                 }
             }
-            R.id.navigation_dashboard -> {
+            R.id.navigation_order -> {
                 if(navStatus != 1){
                     fragment = OrderFragment()
                     navStatus = 1
                 }
             }
-            R.id.navigation_notifications -> {
+            R.id.navigation_profile -> {
                 if(navStatus != 2){
                     fragment = ProfileFragment()
                     navStatus = 2
