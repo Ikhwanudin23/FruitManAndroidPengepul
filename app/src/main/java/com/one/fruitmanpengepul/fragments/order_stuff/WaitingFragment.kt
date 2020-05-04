@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.one.fruitmanpengepul.R
-import com.one.fruitmanpengepul.adapters.CollectorWaitingAdapter
+import com.one.fruitmanpengepul.adapters.collector.CollectorWaitingAdapter
 import com.one.fruitmanpengepul.models.OrderWaiting
 import com.one.fruitmanpengepul.viewmodels.OrderViewModel
 import kotlinx.android.synthetic.main.fragment_waiting_confirmation.view.*
@@ -27,7 +27,11 @@ class WaitingFragment : Fragment(R.layout.fragment_waiting_confirmation){
     private fun setupUI(){
         view!!.rv_waiting.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = CollectorWaitingAdapter(mutableListOf(), activity!!)
+            adapter =
+                CollectorWaitingAdapter(
+                    mutableListOf(),
+                    activity!!
+                )
         }
     }
 

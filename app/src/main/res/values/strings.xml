@@ -19,4 +19,5 @@
     <string name="btn_register">Daftar</string>
     <string name="lorem_long">Lorem ipsum dolor sit amet consectuer. Lorem ipusm dolor sit amet consectuer.</string>
     <string name="btn_cancel">Batal</string>
+    <string name="btn_in_place">Sudah di tempat</string>
 </resources>

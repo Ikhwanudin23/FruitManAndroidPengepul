@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:background="?attr/selectableItemBackground"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:id="@+id/in_place_desc"
+                    android:text="@string/lorem_long"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="end"
+                    app:iconTint="@color/colorWhite"
+                    app:icon="@drawable/ic_done_black_24dp"
+                    android:textAllCaps="false"
+                    android:text="@string/btn_in_place"
+                    app:backgroundTint="@color/colorYellow"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+            android:background="@color/colorGrey"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+</LinearLayout>

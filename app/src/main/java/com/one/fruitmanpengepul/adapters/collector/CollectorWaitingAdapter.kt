@@ -1,4 +1,4 @@
-package com.one.fruitmanpengepul.adapters
+package com.one.fruitmanpengepul.adapters.collector
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -30,7 +30,10 @@ class CollectorWaitingAdapter (private var orders : MutableList<OrderWaiting>, p
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_collector_waiting, parent, false))
+        return ViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_collector_waiting, parent, false)
+        )
     }
 
     override fun getItemCount() = orders.size
