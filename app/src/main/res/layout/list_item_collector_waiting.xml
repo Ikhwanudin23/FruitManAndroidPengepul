@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="6dp"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="38dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_height="38dp"/>
+            <TextView
+                    android:id="@+id/waiting_desc"
+                    android:textSize="16sp"
+                    android:text="@string/lorem_long"
+                    android:layout_marginStart="16dp"
+                    android:maxLines="5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+                android:layout_gravity="end"
+                android:textAllCaps="false"
+                android:textColor="@color/colorDanger"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:text="@string/btn_cancel"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
