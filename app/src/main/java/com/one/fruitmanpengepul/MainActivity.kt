@@ -1,5 +1,6 @@
 package com.one.fruitmanpengepul
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.one.fruitmanpengepul.fragments.OrderFragment
 import com.one.fruitmanpengepul.fragments.ProfileFragment
 import com.one.fruitmanpengepul.fragments.TimelineFragment
+import com.one.fruitmanpengepul.utils.FruitmanUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        Thread(Runnable {
+            if(FruitmanUtil.getToken(this@MainActivity) == null){
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                finish()
+            }
+        }).start()
         if(savedInstanceState == null){ nav_view.selectedItemId = R.id.navigation_home }
     }
 

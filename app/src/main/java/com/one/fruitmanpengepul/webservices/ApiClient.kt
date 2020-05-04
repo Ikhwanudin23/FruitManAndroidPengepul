@@ -1,7 +1,9 @@
 package com.one.fruitmanpengepul.webservices
 
 import com.google.gson.annotations.SerializedName
+import com.one.fruitmanpengepul.models.User
 import okhttp3.OkHttpClient
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -12,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
     private var retrofit : Retrofit? = null
-    const val ENDPOINT = ""
+    const val ENDPOINT = "https://fruitman-app.herokuapp.com/"
     private val opt = OkHttpClient.Builder().apply {
         connectTimeout(30, TimeUnit.SECONDS)
         readTimeout(30, TimeUnit.SECONDS)
@@ -35,8 +37,14 @@ object ApiClient {
 
 interface ApiService {
     @FormUrlEncoded
-    @POST("api/login")
+    @POST("api/user/login")
     fun login(@Field("email") email : String, @Field("password") password : String)
+            : Call<WrappedResponse<User>>
+
+    @FormUrlEncoded
+    @POST("api/user/register")
+    fun register(@Field("name") name : String, @Field("email") email : String, @Field("password") password: String)
+            : Call<WrappedResponse<User>>
 }
 
 data class WrappedResponse<T>(

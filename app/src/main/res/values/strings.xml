@@ -8,4 +8,13 @@
     <string name="title_profile">Profil</string>
     <string name="lorem">Lorem ipsum dolor sit amet consectuer</string>
     <string name="btn_learn_more">Detail postingan</string>
+    <string name="info_login">Login</string>
+    <string name="hint_email">Masukkan email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_not_have">Saya belum punya akun</string>
+    <string name="common_understand">Mengerti</string>
+    <string name="info_register">Daftar</string>
+    <string name="hint_name">Nama lengkap</string>
+    <string name="btn_register">Daftar</string>
 </resources>
