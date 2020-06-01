@@ -11,16 +11,17 @@ import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.viewmodels.UserState
 import com.one.fruitmanpengepul.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_login.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var userViewModel : UserViewModel
+    private val userViewModel : UserViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         supportActionBar?.hide()
         goToRegister()
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        //userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         doLogin()
         userViewModel.listenToUIState().observer(this, Observer { handleUIState(it) })
     }

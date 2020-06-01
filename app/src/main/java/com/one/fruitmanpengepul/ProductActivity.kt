@@ -27,22 +27,51 @@ class ProductActivity : AppCompatActivity() {
         setContentView(R.layout.activity_product)
         btn_add_image.setOnClickListener { Pix.start(this@ProductActivity, IMAGE_REQ_CODE) }
         productViewModel.getState().observer(this@ProductActivity, Observer { handleUI(it) })
+        fill()
     }
 
-    private fun fill(image : String){
-        btn_submit.setOnClickListener {
-            val token = "Bearer ${FruitmanUtil.getToken(this@ProductActivity)}"
-            val name = et_name.text.toString().trim()
-            val price = et_price.text.toString().trim()
-            val desc = et_description.text.toString().trim()
-            val address = et_address.text.toString().trim()
-            imageUrl = image
-            if (productViewModel.validate(name, price, desc,  address, imageUrl)){
-                val productToSend = Product(name = name, price = price, address = address, description = desc)
-                productViewModel.createProduct(token, productToSend, imageUrl)
-            }else{
-                showInfoAlert("Not valid")
+    private fun fill(){
+        if (isInsert()){
+            btn_submit.text = "insert"
+            btn_submit.setOnClickListener {
+                val token = "Bearer ${FruitmanUtil.getToken(this@ProductActivity)}"
+                val name = et_name.text.toString().trim()
+                val price = et_price.text.toString().trim()
+                val desc = et_description.text.toString().trim()
+                val address = et_address.text.toString().trim()
+                if (productViewModel.validate(name, price, desc,  address, imageUrl)){
+                    val productToSend = Product(name = name, price = price, address = address, description = desc)
+                    productViewModel.createProduct(token, productToSend, imageUrl)
+                }else{
+                    showInfoAlert("Not valid")
+                }
             }
+        }else{
+            btn_submit.text = "update"
+            getProduct()
+            btn_submit.setOnClickListener {
+                val token = "Bearer ${FruitmanUtil.getToken(this@ProductActivity)}"
+                val name = et_name.text.toString().trim()
+                val price = et_price.text.toString().trim()
+                val desc = et_description.text.toString().trim()
+                val address = et_address.text.toString().trim()
+                if (productViewModel.validate(name, price, desc,  address, null)){
+                    val productToSend = Product(name = name, price = price, address = address, description = desc)
+                    productViewModel.updateProduct(token, getPassedProduct()?.id.toString(), productToSend, imageUrl)
+                }else{
+                    showInfoAlert("Not valid")
+                }
+            }
+
+        }
+    }
+
+    private fun getProduct(){
+        getPassedProduct()?.let {
+            et_name.setText(it.name.toString())
+            et_price.setText((it.price.toString()))
+            et_description.setText(it.description.toString())
+            et_address.setText(it.address.toString())
         }
     }
 
@@ -78,7 +107,7 @@ class ProductActivity : AppCompatActivity() {
                 //toast("result : ${it[0]}")
                 //image = it[0]
                 iv_product.load(File(it[0]))
-                fill(it[0])
+                imageUrl = it[0]
             }
         }
     }
@@ -90,6 +119,8 @@ class ProductActivity : AppCompatActivity() {
         }.show()
     }
 
+    private fun isInsert() = intent.getBooleanExtra("IS_INSERT", true)
+    private fun getPassedProduct() : Product? = intent.getParcelableExtra("PRODUCT")
     private fun setNameErr(err : String?) { til_name.error = err }
     private fun setPriceErr(err : String?) { til_price.error = err }
     private fun setAddressErr(err : String?) { til_address.error = err }

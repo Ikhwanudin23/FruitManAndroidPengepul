@@ -1,7 +1,9 @@
 package com.one.fruitmanpengepul.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.one.fruitmanpengepul.models.User
+import com.one.fruitmanpengepul.repositories.UserRepository
 import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.utils.SingleLiveEvent
 import com.one.fruitmanpengepul.webservices.ApiClient
@@ -10,12 +12,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel : ViewModel(){
+class UserViewModel(private val userRepository: UserRepository) : ViewModel(){
     private val api = ApiClient.instance()
     private var state : SingleLiveEvent<UserState> = SingleLiveEvent()
+    private var user = MutableLiveData<User>()
 
     private fun setLoading() { state.value = UserState.IsLoading(true) }
     private fun hideLoading() { state.value = UserState.IsLoading(false) }
+    private fun toast(message: String) { state.value = UserState.ShowToast(message) }
+    private fun success(token: String) { state.value = UserState.Success(token) }
 
     fun validateLogin(name : String?, email: String, password: String) : Boolean{
         state.value = UserState.Reset
@@ -37,7 +42,7 @@ class UserViewModel : ViewModel(){
         return true
     }
 
-    fun register(name : String, email: String, password: String){
+    /*fun register(name : String, email: String, password: String){
         setLoading()
         api.register(name, email, password).enqueue(object: Callback<WrappedResponse<User>>{
             override fun onFailure(call: Call<WrappedResponse<User>>, t: Throwable) {
@@ -62,9 +67,9 @@ class UserViewModel : ViewModel(){
                 hideLoading()
             }
         })
-    }
+    }*/
 
-    fun login(email: String, password: String){
+    /*fun login(email: String, password: String){
         setLoading()
         api.login(email, password).enqueue(object : Callback<WrappedResponse<User>>{
             override fun onFailure(call: Call<WrappedResponse<User>>, t: Throwable) {
@@ -89,9 +94,37 @@ class UserViewModel : ViewModel(){
                 hideLoading()
             }
         })
+    }*/
+
+    fun register(name: String, email: String, password: String){
+        setLoading()
+        userRepository.register(name, email, password){result, error->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result?.let { success(it) }
+        }
+    }
+
+    fun login(email: String, password: String){
+        setLoading()
+        userRepository.login(email, password){result, error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result?.let { success(it) }
+        }
+    }
+
+    fun profile(token : String){
+        setLoading()
+        userRepository.profile(token){result, error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result?.let { user.postValue(it) }
+        }
     }
 
     fun listenToUIState() = state
+    fun listenToUser() = user
 
 }
 

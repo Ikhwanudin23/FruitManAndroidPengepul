@@ -11,5 +11,6 @@ data class User(
     @SerializedName("email") var email : String? = null,
     @SerializedName("api_token") var token : String? = null,
     @SerializedName("image") var image : String? = null,
-    @SerializedName("address") var address : String? = null
+    @SerializedName("address") var address : String? = null,
+    @SerializedName("phone") var phone : String? = null
 ) : Parcelable

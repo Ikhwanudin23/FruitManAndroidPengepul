@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        supportActionBar?.hide()
         Thread(Runnable {
             if(FruitmanUtil.getToken(this@MainActivity) == null){
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
@@ -92,6 +93,10 @@ class MainActivity : AppCompatActivity() {
             is OrderState.SuccessDelete -> {
                 fetch()
                 toast(resources.getString(R.string.info_success_delete))
+            }
+            is OrderState.SuccessConfirmed -> {
+                fetch()
+                toast(resources.getString(R.string.success_confirmed))
             }
         }
     }

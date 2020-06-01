@@ -1,11 +1,13 @@
 package com.one.fruitmanpengepul.adapters.seller
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import com.one.fruitmanpengepul.ProductActivity
 import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.models.Product
 import kotlinx.android.synthetic.main.item_myproduct.view.*
@@ -18,6 +20,12 @@ class SellerMyProductAdapter(private var products : MutableList<Product>, privat
                 iv_image.load(""+product.image)
                 tv_name.text = product.name
                 tv_price.text = product.price
+                setOnClickListener {
+                    context.startActivity(Intent(context, ProductActivity::class.java).apply {
+                        putExtra("PRODUCT", product)
+                        putExtra("IS_INSERT", false)
+                    })
+                }
             }
         }
     }

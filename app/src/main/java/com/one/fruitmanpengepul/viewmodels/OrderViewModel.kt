@@ -22,6 +22,7 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
     private fun setLoading() { state.value = OrderState.IsLoading(true) }
     private fun hideLoading() { state.value = OrderState.IsLoading(false) }
     private fun toast(message: String) { state.value = OrderState.ShowToast(message) }
+    private fun successConfirmed() { state.value = OrderState.SuccessConfirmed }
 
     fun switch(){
         val currentRole = userRole.value!!
@@ -70,6 +71,15 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
         }
     }
 
+    fun confirmed(token: String, id : String){
+        setLoading()
+        orderRepository.confirmed(token, id){result, error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result?.let { successConfirmed() }
+        }
+    }
+
     fun validate(offer_price: String) : Boolean{
         if (offer_price.isEmpty()){
             state.value = OrderState.Reset
@@ -85,12 +95,14 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
 }
 sealed class OrderState{
     object SuccessDelete : OrderState()
+    object SuccessConfirmed : OrderState()
     object Failed : OrderState()
     object Success : OrderState()
     data class IsLoading(var state : Boolean) : OrderState()
     data class ShowToast(var message : String) : OrderState()
     data class Validate(var offer_price : String) : OrderState()
     object Reset : OrderState()
+
 }
 
 enum class UserRole {

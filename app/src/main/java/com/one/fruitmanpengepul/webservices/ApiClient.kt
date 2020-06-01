@@ -48,12 +48,20 @@ interface ApiService {
     fun register(@Field("name") name : String, @Field("email") email : String, @Field("password") password: String)
             : Call<WrappedResponse<User>>
 
+    @GET("api/user/profile")
+    fun profile(@Header("Authorization") token : String) : Call<WrappedResponse<User>>
+
     @FormUrlEncoded
     @POST("api/order/{id}/decline")
     fun decline(
         @Header("Authorization") token : String,
-        @Path("id")id : Int,
-        @Field("role") role : String
+        @Path("id")id : Int, @Field("role") role : String
+    ) : Call<WrappedResponse<Order>>
+
+    @GET("order/{id}/confirmed")
+    fun confirmed(
+        @Header("Authorization") token : String,
+        @Path("id") id : Int
     ) : Call<WrappedResponse<Order>>
 
     @GET("api/product")
@@ -64,19 +72,14 @@ interface ApiService {
 
     @Multipart
     @POST("api/product/store")
-    fun postProduct (
-        @Header("Authorization") token : String,
-        @Part("name")name : String,
-        @Part("price") price : Int,
-        @Part("address") address : String,
-        @Part("description") description : String,
-        @Part("image") image : String
-    ) : Call<WrappedResponse<Product>>
-
+    fun createProduct(@Header("Authorization") token : String, @PartMap partMap:  HashMap<String, RequestBody>, @Part image : MultipartBody.Part) : Call<WrappedResponse<Product>>
 
     @Multipart
-    @POST("api/product/store")
-    fun createProduct(@Header("Authorization") token : String, @PartMap partMap:  HashMap<String, RequestBody>, @Part image : MultipartBody.Part) : Call<WrappedResponse<Product>>
+    @POST("api/product/{id}/update")
+    fun updateProduct(@Header("Authorization") token : String,
+                      @Path("id") id : Int,
+                      @PartMap partMap:  HashMap<String, RequestBody>,
+                      @Part image : MultipartBody.Part) : Call<WrappedResponse<Product>>
 
     @FormUrlEncoded
     @POST("api/order/store")

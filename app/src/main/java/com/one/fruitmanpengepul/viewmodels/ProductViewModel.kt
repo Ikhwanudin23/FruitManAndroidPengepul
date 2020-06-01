@@ -61,32 +61,55 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
 
     }
 
+    fun updateProduct(token: String, id : String, productToSend : Product, imageUrl: String){
+        try{
+            setLoading()
+            val map = HashMap<String, RequestBody>()
+            map["name"] = createPartFromString(productToSend.name!!)
+            map["price"] = createPartFromString(productToSend.price!!)
+            map["description"] = createPartFromString(productToSend.description!!)
+            map["address"] = createPartFromString(productToSend.address!!)
+            val file = File(imageUrl)
+            val requestBodyForFile = RequestBody.create(MediaType.parse("image/*"), file)
+            val image = MultipartBody.Part.createFormData("image", file.name, requestBodyForFile)
+            productRepository.updateProduct(token, id, map, image){ resultBool, e ->
+                hideLoading()
+                e?.let { toast(it.message.toString()) }
+                if(resultBool){ state.value = ProductState.Success }
+            }
+        }catch (e: Exception){
+            println(e.message.toString())
+            toast(e.message.toString())
+        }
+
+    }
+
 
     private fun createPartFromString(s: String) : RequestBody = RequestBody.create(MultipartBody.FORM, s)
 
-
-
-    fun validate(name : String, price: String, address: String, desc: String, image: String) : Boolean{
+    fun validate(name : String, price: String, address: String, desc: String, image: String?) : Boolean{
         state.value = ProductState.Reset
         if (name.isEmpty()){
-            toast("nama produk tidak boleh kosong")
+            state.value = ProductState.Validate(name = "nama produk tidak boleh kosong")
             return false
         }
         if (price.isEmpty()){
-            toast("harga produk tidak boleh kosong")
+            state.value = ProductState.Validate(price = "harga produk tidak boleh kosong")
             return false
         }
         if (address.isEmpty()){
-            toast("alamat produk tidak boleh kosong")
+            state.value = ProductState.Validate(address = "alamat produk tidak boleh kosong")
             return false
         }
         if (desc.isEmpty()){
-            toast("deskripsi produk tidak boleh kosong")
+            state.value = ProductState.Validate(desc = "deskripsi produk tidak boleh kosong")
             return false
         }
-        if (image.isEmpty()){
-            toast("foto produk tidak boleh kosong")
-            return false
+        if (image != null){
+            if (image.isEmpty()){
+                toast("foto produk tidak boleh kosong")
+                return false
+            }
         }
         return true
     }

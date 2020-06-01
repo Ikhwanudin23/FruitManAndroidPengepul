@@ -80,4 +80,26 @@ class ProductRepository (private val api : ApiService) {
             }
         })
     }
+    fun updateProduct(token: String, id : String, requestBody: HashMap<String, RequestBody>, image: MultipartBody.Part, result: (Boolean, Error?) -> Unit){
+        api.updateProduct(token, id.toInt(), requestBody, image).enqueue(object : Callback<WrappedResponse<Product>>{
+            override fun onFailure(call: Call<WrappedResponse<Product>>, t: Throwable) {
+                println(t.message.toString())
+                result(false, Error(t.message.toString()))
+            }
+
+            override fun onResponse(call: Call<WrappedResponse<Product>>, response: Response<WrappedResponse<Product>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        result(true, null)
+                    }else{
+                        result(false, Error(body.message))
+                    }
+                }else{
+                    result(false, Error("Error with status code ${response.code()}"))
+                }
+            }
+
+        })
+    }
 }
