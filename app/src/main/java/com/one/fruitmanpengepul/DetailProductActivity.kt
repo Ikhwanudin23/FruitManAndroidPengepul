@@ -15,9 +15,10 @@ import com.one.fruitmanpengepul.viewmodels.OrderState
 import com.one.fruitmanpengepul.viewmodels.OrderViewModel
 import kotlinx.android.synthetic.main.activity_detail_product.*
 import kotlinx.android.synthetic.main.content_detail_product.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailProductActivity : AppCompatActivity() {
-    private lateinit var orderViewModel: OrderViewModel
+    private val orderViewModel: OrderViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ class DetailProductActivity : AppCompatActivity() {
         getPassedProduct()?.let {
             supportActionBar?.title = it.name
             iv_product.load(""+it.image)
-            tv_name.text = it.user.name
+            tv_name.text = it.user?.name
             tv_price.text = it.price.toString()
             tv_description.text = it.description
             tv_address.text = it.address
@@ -36,26 +37,24 @@ class DetailProductActivity : AppCompatActivity() {
                 val offer_price = et_offer_price.text.toString().trim()
                 if (orderViewModel.validate(offer_price)){
                     orderViewModel.postOrder("Bearer ${FruitmanUtil.getToken(this@DetailProductActivity)!!}",
-                        it.user.id!!, it.id!!, offer_price)
+                        it.user?.id!!, it.id!!, offer_price)
                 }
             }
         }
-        orderViewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
-        orderViewModel.getState().observer(this, Observer { handleui(it) })
+        orderViewModel.getState().observer(this, Observer { handleUI(it) })
     }
 
-    private fun handleui(it : OrderState){
+    private fun handleUI(it : OrderState){
         when(it){
             is OrderState.ShowToast -> toast(it.message)
-            is OrderState.IsLoading -> {
-                if (it.state){
-                    btn_order.isEnabled = false
-                }else{
-                    btn_order.isEnabled = true
-                }
-            }
+            is OrderState.IsLoading -> btn_order.isEnabled = !it.state
             is OrderState.Reset -> setErrorOfferPrice(null)
             is OrderState.Validate -> it.offer_price.let { setErrorOfferPrice(it) }
+            is OrderState.Success -> {
+                toast(resources.getString(R.string.info_success))
+                finish()
+            }
+            is OrderState.Failed -> toast("Failed")
 
         }
     }

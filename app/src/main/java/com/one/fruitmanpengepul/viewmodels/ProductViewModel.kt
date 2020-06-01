@@ -3,109 +3,70 @@ package com.one.fruitmanpengepul.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.one.fruitmanpengepul.models.Product
+import com.one.fruitmanpengepul.repositories.ProductRepository
 import com.one.fruitmanpengepul.utils.SingleLiveEvent
-import com.one.fruitmanpengepul.webservices.ApiClient
-import com.one.fruitmanpengepul.webservices.WrappedListResponse
-import com.one.fruitmanpengepul.webservices.WrappedResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.lang.Exception
 
-class ProductViewModel : ViewModel(){
+class ProductViewModel(private val productRepository: ProductRepository) : ViewModel(){
     private var products = MutableLiveData<List<Product>>()
     private var state : SingleLiveEvent<ProductState> = SingleLiveEvent()
-    private val api = ApiClient.instance()
 
     private fun setLoading() { state.value = ProductState.IsLoading(true) }
     private fun hideLoading() { state.value = ProductState.IsLoading(false) }
     private fun toast(message: String) {state.value = ProductState.ShowToast(message)}
     private fun success() { state.value = ProductState.Success}
 
-    fun getAllProduct(token : String){
+    fun getAllProduct(token:String){
         setLoading()
-        api.getAllProduct(token).enqueue(object : Callback<WrappedListResponse<Product>>{
-            override fun onFailure(call: Call<WrappedListResponse<Product>>, t: Throwable) {
-                println("OnFailure : ${t.message}")
-                hideLoading()
-            }
-
-            override fun onResponse(call: Call<WrappedListResponse<Product>>, response: Response<WrappedListResponse<Product>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        val data = body.data
-                        products.postValue(data)
-                    }else{
-                        toast("status false ${body.message}")
-                    }
-                }else{
-                    toast("not response ${response.message()}")
-                }
-                hideLoading()
-            }
-
-        })
+        productRepository.getAllProduct(token){resultList, e ->
+            hideLoading()
+            e?.let { toast(it.message.toString()) }
+            resultList?.let { products.postValue(it) }
+        }
     }
 
-    fun getMyProduct(token: String){
+    fun getMyProducts(token: String){
         setLoading()
-        api.getMyProduct(token).enqueue(object : Callback<WrappedListResponse<Product>>{
-            override fun onFailure(call: Call<WrappedListResponse<Product>>, t: Throwable) {
-                hideLoading()
-                toast("OnFailure : ${t.message}")
-                println("OnFailure : ${t.message}")
-            }
-
-            override fun onResponse(call: Call<WrappedListResponse<Product>>, response: Response<WrappedListResponse<Product>>) {
-                if (response.isSuccessful){
-                    val body  = response.body()
-                    if (body?.status!!){
-                        val data = body.data
-                        products.postValue(data)
-                    }else{
-                        toast("status false ${body.message}")
-                        println("status false ${body.message}")
-                    }
-                }else{
-                    toast("not response ${response.message()}")
-                    println("not response ${response.message()}")
-                }
-                hideLoading()
-            }
-
-        })
+        productRepository.getMyProduct(token){ resultList, e ->
+            hideLoading()
+            e?.let { toast(it.message.toString()) }
+            resultList?.let { products.postValue(it) }
+        }
     }
 
-    fun postProduct(token : String, name : String, price : String, address : String, desc : String, image : String){
-        setLoading()
-        api.postProduct(token, name, price.toInt(), address, desc, image).enqueue(object : Callback<WrappedResponse<Product>>{
-            override fun onFailure(call: Call<WrappedResponse<Product>>, t: Throwable) {
-                println("OnFailure : ${t.message}")
-                toast("OnFailure : ${t.message}")
+    fun createProduct(token: String, productToSend : Product, imageUrl: String){
+        try{
+            setLoading()
+            val map = HashMap<String, RequestBody>()
+            map["name"] = createPartFromString(productToSend.name!!)
+            map["price"] = createPartFromString(productToSend.price!!)
+            map["description"] = createPartFromString(productToSend.description!!)
+            map["address"] = createPartFromString(productToSend.address!!)
+            val file = File(imageUrl)
+            val requestBodyForFile = RequestBody.create(MediaType.parse("image/*"), file)
+            val image = MultipartBody.Part.createFormData("image", file.name, requestBodyForFile)
+            productRepository.createProduct(token, map, image){ resultBool, e ->
                 hideLoading()
+                e?.let { toast(it.message.toString()) }
+                if(resultBool){ state.value = ProductState.Success }
             }
+        }catch (e: Exception){
+            println(e.message.toString())
+            toast(e.message.toString())
+        }
 
-            override fun onResponse(call: Call<WrappedResponse<Product>>, response: Response<WrappedResponse<Product>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        success()
-                        toast("berhasil menambahkan produk ${name}")
-                    }else{
-                        toast("status false ${body.message}")
-                        println("status false ${body.message}")
-                    }
-                }else{
-                    toast("no response ${response.message()}")
-                    println("no response ${response.message()}")
-                }
-                hideLoading()
-            }
-
-        })
     }
 
-    fun validate(name : String, price: String, address: String, desc: String, image: String?) : Boolean{
+
+    private fun createPartFromString(s: String) : RequestBody = RequestBody.create(MultipartBody.FORM, s)
+
+
+
+    fun validate(name : String, price: String, address: String, desc: String, image: String) : Boolean{
         state.value = ProductState.Reset
         if (name.isEmpty()){
             toast("nama produk tidak boleh kosong")
@@ -123,10 +84,10 @@ class ProductViewModel : ViewModel(){
             toast("deskripsi produk tidak boleh kosong")
             return false
         }
-//        if (image.isEmpty()){
-//            toast("foto produk tidak boleh kosong")
-//            return false
-//        }
+        if (image.isEmpty()){
+            toast("foto produk tidak boleh kosong")
+            return false
+        }
         return true
     }
 

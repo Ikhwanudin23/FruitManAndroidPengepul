@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName
 import com.one.fruitmanpengepul.models.Order
 import com.one.fruitmanpengepul.models.Product
 import com.one.fruitmanpengepul.models.User
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -70,6 +72,11 @@ interface ApiService {
         @Part("description") description : String,
         @Part("image") image : String
     ) : Call<WrappedResponse<Product>>
+
+
+    @Multipart
+    @POST("api/product/store")
+    fun createProduct(@Header("Authorization") token : String, @PartMap partMap:  HashMap<String, RequestBody>, @Part image : MultipartBody.Part) : Call<WrappedResponse<Product>>
 
     @FormUrlEncoded
     @POST("api/order/store")

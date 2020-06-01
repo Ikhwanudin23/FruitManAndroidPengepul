@@ -10,16 +10,13 @@ import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.adapters.collector.CollectorInProgressInPlaceAdapter
 import com.one.fruitmanpengepul.viewmodels.OrderViewModel
 import kotlinx.android.synthetic.main.fragment_in_progress.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class InProgressFragment : Fragment(R.layout.fragment_in_progress){
-    private lateinit var orderViewModel: OrderViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        orderViewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
-        //orderViewModel.listenToInPlaceOrder().observe(viewLifecycleOwner, Observer { handle(it) })
-        //orderViewModel.fetchDataPalsuInProgress()
     }
 
     private fun setupUI(){

@@ -2,11 +2,9 @@ package com.one.fruitmanpengepul.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.adapters.TimelineAdapter
@@ -14,10 +12,10 @@ import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.viewmodels.ProductState
 import com.one.fruitmanpengepul.viewmodels.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_timeline.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TimelineFragment : Fragment(R.layout.fragment_timeline){
-
-    private lateinit var productViewModel: ProductViewModel
+    private val productViewModel : ProductViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,7 +24,6 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline){
             adapter = TimelineAdapter(mutableListOf(), activity!!)
 
         }
-        productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
         productViewModel.getState().observer(viewLifecycleOwner, Observer { handleui(it) })
         productViewModel.getProducts().observe(viewLifecycleOwner, Observer {
             rv_timeline.adapter?.let {adapter ->
