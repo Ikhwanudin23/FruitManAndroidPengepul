@@ -13,15 +13,15 @@ import com.one.fruitmanpengepul.viewmodels.OrderViewModel
 import com.one.fruitmanpengepul.viewmodels.UserRole
 import kotlinx.android.synthetic.main.fragment_order.view.*
 import kotlinx.android.synthetic.main.fragment_order.view.fab
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class OrderFragment : Fragment(R.layout.fragment_order){
     private val orderViewModel: OrderViewModel by sharedViewModel()
+    private lateinit var fragmentAdapter : CustomFragmentPagerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fragmentAdapter = CustomFragmentPagerAdapter(childFragmentManager).apply {
+        fragmentAdapter = CustomFragmentPagerAdapter(childFragmentManager).apply {
             addFragment(WaitingFragment(), "Waiting")
             addFragment(InProgressFragment(), "In Progress")
             addFragment(CompletedOrderFragment(), "Completed")
@@ -43,8 +43,12 @@ class OrderFragment : Fragment(R.layout.fragment_order){
     private fun handleSwitch(role: UserRole){
         with(requireView()){
             if(role == UserRole.BUYER){
+                fragmentAdapter.changeTitleAtPosition(0, resources.getString(R.string.title_waiting))
+                view!!.tabs.getTabAt(0)?.setText(fragmentAdapter.getPageTitle(0))
                 fab.text = resources.getString(R.string.switcher_buyer)
             }else{
+                fragmentAdapter.changeTitleAtPosition(0, resources.getString(R.string.title_order_in))
+                view!!.tabs.getTabAt(0)?.setText(fragmentAdapter.getPageTitle(0))
                 fab.text = resources.getString(R.string.switcher_seller)
             }
         }

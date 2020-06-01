@@ -116,4 +116,6 @@
     <string name="switcher_seller">Lihat sebagai buyer</string>
     <string name="info_success">Berhasil</string>
     <string name="info_success_delete">Berhasil dihapus</string>
+    <string name="title_waiting">Waiting</string>
+    <string name="title_order_in">Order in</string>
 </resources>
