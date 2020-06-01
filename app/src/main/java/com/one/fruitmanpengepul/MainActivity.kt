@@ -5,16 +5,23 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.one.fruitmanpengepul.fragments.OrderFragment
 import com.one.fruitmanpengepul.fragments.ProfileFragment
 import com.one.fruitmanpengepul.fragments.TimelineFragment
 import com.one.fruitmanpengepul.utils.FruitmanUtil
+import com.one.fruitmanpengepul.viewmodels.OrderState
+import com.one.fruitmanpengepul.viewmodels.OrderViewModel
+import com.one.fruitmanpengepul.viewmodels.UserRole
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     companion object{ var navStatus = -1 }
     private var fragment : Fragment? = null
+    private val orderViewModel: OrderViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +34,8 @@ class MainActivity : AppCompatActivity() {
             }
         }).start()
         if(savedInstanceState == null){ nav_view.selectedItemId = R.id.navigation_home }
+        orderViewModel.listenToRole().observe(this, Observer { listenToRoleSwitch(it) })
+        orderViewModel.getState().observer(this, Observer { handleUIState(it) })
     }
 
 
@@ -66,5 +75,39 @@ class MainActivity : AppCompatActivity() {
         true
     }
 
+    private fun listenToRoleSwitch(it: UserRole){
+        FruitmanUtil.getToken(this@MainActivity)?.let { token ->
+            val t = "Bearer $token"
+            if(it == UserRole.BUYER){
+                orderViewModel.collectorWaitingOrder(t)
+            }else{
+                orderViewModel.sellerGetOrderIn(t)
+            }
+        }
+    }
+
+    private fun handleUIState(it: OrderState){
+        when(it){
+            is OrderState.ShowToast -> toast(it.message)
+            is OrderState.SuccessDelete -> {
+                fetch()
+                toast(resources.getString(R.string.info_success_delete))
+            }
+        }
+    }
+
+    private fun fetch(){
+        FruitmanUtil.getToken(this@MainActivity)?.let { token ->
+            val t = "Bearer $token"
+            val defaultValue = orderViewModel.listenToRole().value
+            if(defaultValue == UserRole.BUYER){
+                orderViewModel.collectorWaitingOrder(t)
+            }else{
+                orderViewModel.sellerGetOrderIn(t)
+            }
+        }
+    }
+
+    private fun toast(m: String) = Toast.makeText(this, m, Toast.LENGTH_LONG).show()
 
 }

@@ -5,85 +5,70 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.adapters.collector.CollectorWaitingAdapter
 import com.one.fruitmanpengepul.adapters.seller.SellerOrderInAdapter
+import com.one.fruitmanpengepul.models.Order
 import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.viewmodels.OrderState
 import com.one.fruitmanpengepul.viewmodels.OrderViewModel
+import com.one.fruitmanpengepul.viewmodels.UserRole
 import kotlinx.android.synthetic.main.fragment_waiting_confirmation.*
-import kotlinx.android.synthetic.main.list_item_collector_waiting.*
+import kotlinx.android.synthetic.main.fragment_waiting_confirmation.view.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class WaitingFragment : Fragment(R.layout.fragment_waiting_confirmation){
-    private lateinit var orderViewModel: OrderViewModel
-    //var change : Boolean = false
-    companion object{
-        var change : Boolean = false
-    }
+    private val orderViewModel: OrderViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        orderViewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
-        orderViewModel.getState().observer(viewLifecycleOwner, Observer { handleui(it) })
-        collector()
-        fab.setOnClickListener {
-            if (!change){
-                seller()
-                change = true
+        initialize()
+        orderViewModel.listenToRole().observe(viewLifecycleOwner, Observer { reSetupAdapter(it) })
+        orderViewModel.listenToOrders().observe(viewLifecycleOwner, Observer { handleData(it) })
+
+    }
+
+    private fun initialize(){
+        requireView().rv_waiting.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
+            adapter = CollectorWaitingAdapter(mutableListOf(), requireActivity(), orderViewModel)
+        }
+    }
+
+    private fun handleData(it: List<Order>){
+        rv_waiting.adapter?.let { adapter ->
+            if (adapter is CollectorWaitingAdapter){
+                adapter.changelist(it)
+            }else if(adapter is SellerOrderInAdapter){
+                adapter.changelist(it)
+            }
+        }
+    }
+
+    private fun reSetupAdapter(role: UserRole){
+        requireView().rv_waiting.apply {
+            adapter = if(role == UserRole.BUYER){
+                CollectorWaitingAdapter(mutableListOf(), requireActivity(), orderViewModel)
             }else{
-                collector()
-                change = false
+                SellerOrderInAdapter(mutableListOf(), requireActivity())
             }
         }
     }
 
-    private fun collector() {
-        rv_waiting.apply {
-            layoutManager = LinearLayoutManager(activity!!)
-            adapter = CollectorWaitingAdapter(mutableListOf(), activity!!, orderViewModel)
-        }
-        //orderViewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
-        orderViewModel.collectorWaitingOrder("Bearer ${FruitmanUtil.getToken(activity!!)}")
-        //orderViewModel.getState().observer(viewLifecycleOwner, Observer { handleui(it) })
-        orderViewModel.listenToOrders().observe(viewLifecycleOwner, Observer {
-            rv_waiting.adapter?.let {adapter ->
-                if (adapter is CollectorWaitingAdapter){
-                    adapter.changelist(it)
-                }
-            }
-        })
+    override fun onResume() {
+        super.onResume()
+        fetch()
     }
 
-    private fun seller(){
-        rv_waiting.apply {
-            layoutManager = LinearLayoutManager(activity!!)
-            adapter = SellerOrderInAdapter(mutableListOf(), activity!!)
-        }
-        //orderViewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
-        orderViewModel.sellerGetOrderIn("Bearer ${FruitmanUtil.getToken(activity!!)}")
-        //orderViewModel.getState().observer(viewLifecycleOwner, Observer { handleui(it) })
-        orderViewModel.listenToOrders().observe(viewLifecycleOwner, Observer {
-            rv_waiting.adapter?.let {adapter ->
-                if (adapter is SellerOrderInAdapter){
-                    adapter.changelist(it)
-                }
-            }
-        })
-    }
-
-    private fun handleui(it : OrderState){
-        when(it){
-            is OrderState.ShowToast -> toast(it.message)
-            is OrderState.IsLoading -> {
-                if (it.state){
-                    pb_waiting.isIndeterminate = true
-                    pb_waiting.visibility = View.VISIBLE
-                }else{
-                    pb_waiting.isIndeterminate = false
-                    pb_waiting.visibility = View.GONE
-                }
+    private fun fetch(){
+        FruitmanUtil.getToken(requireActivity())?.let { token ->
+            val t = "Bearer $token"
+            val defaultValue = orderViewModel.listenToRole().value!!
+            if(defaultValue == UserRole.BUYER){
+                orderViewModel.collectorWaitingOrder(t)
+            }else{
+                orderViewModel.sellerGetOrderIn(t)
             }
         }
     }

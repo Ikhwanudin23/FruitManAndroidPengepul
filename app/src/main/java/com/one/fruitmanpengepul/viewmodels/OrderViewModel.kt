@@ -4,131 +4,70 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.one.fruitmanpengepul.models.Order
 import com.one.fruitmanpengepul.models.User
+import com.one.fruitmanpengepul.repositories.OrderRepository
 import com.one.fruitmanpengepul.utils.SingleLiveEvent
 import com.one.fruitmanpengepul.webservices.ApiClient
+import com.one.fruitmanpengepul.webservices.ApiService
 import com.one.fruitmanpengepul.webservices.WrappedListResponse
 import com.one.fruitmanpengepul.webservices.WrappedResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OrderViewModel : ViewModel(){
-    private var orders = MutableLiveData<List<Order>>()
-    private var state : SingleLiveEvent<OrderState> = SingleLiveEvent()
-    private var api = ApiClient.instance()
+class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(){
+    private val orders = MutableLiveData<List<Order>>()
+    private val state : SingleLiveEvent<OrderState> = SingleLiveEvent()
+    private val userRole  = MutableLiveData(UserRole.BUYER)
 
-    fun postOrder(token : String, seller_id : Int, product_id : Int, offer_price: String){
-        println("Bearer ${token}")
-        println("offer price ${offer_price}")
-        state.value = OrderState.IsLoading(true)
-        api.postOrder(token, seller_id, product_id, offer_price.toInt()).enqueue(object : Callback<WrappedResponse<Order>>{
-            override fun onFailure(call: Call<WrappedResponse<Order>>, t: Throwable) {
-                println("OnFailure : ${t.message}")
-                state.value = OrderState.IsLoading(false)
-            }
+    private fun setLoading() { state.value = OrderState.IsLoading(true) }
+    private fun hideLoading() { state.value = OrderState.IsLoading(false) }
+    private fun toast(message: String) { state.value = OrderState.ShowToast(message) }
 
-            override fun onResponse(call: Call<WrappedResponse<Order>>, response: Response<WrappedResponse<Order>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        state.value = OrderState.ShowToast("berhasil mengorder gatau ")
-                    }else{
-                        state.value = OrderState.ShowToast("body not found ${body.message}")
-                        println("body not found ${body.message}")
-                    }
-
-                }else{
-                    state.value = OrderState.ShowToast("not response ${response.message()}")
-                    println("not response ${response.message()}")
-                }
-                state.value = OrderState.IsLoading(false)
-            }
-
-        })
+    fun switch(){
+        val currentRole = userRole.value!!
+        if (currentRole == UserRole.BUYER){ userRole.value = UserRole.SELLER }else{ userRole.value = UserRole.BUYER }
     }
 
-    fun collectorWaitingOrder(token: String){
-        state.value = OrderState.IsLoading(true)
-        api.getOrdeWaitingrByCollector(token).enqueue(object : Callback<WrappedListResponse<Order>>{
-            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
-                println("OnFailure : ${t.message}")
-                state.value = OrderState.IsLoading(false)
-            }
 
-            override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        val data = body.data
-                        orders.postValue(data)
-                    }else{
-                        println("status false ${body.message}")
-                        state.value = OrderState.ShowToast("status false ${body.message}")
-                    }
-                }else{
-                    println("tidak mendapat response ${response.message()}")
-                    state.value = OrderState.ShowToast("tidak mendapat response ${response.message()}")
-                }
-                state.value = OrderState.IsLoading(false)
+    fun postOrder(token: String, seller_id : Int, product_id : Int, offer_price: String){
+        setLoading()
+        orderRepository.postOrder(token, seller_id, product_id, offer_price) { _ , error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) } ?: kotlin.run {
+                state.value = OrderState.Success
             }
+        }
+    }
 
-        })
+    fun collectorWaitingOrder(token:String){
+        setLoading()
+        orderRepository.collectorWaitingOrder(token){ result, e ->
+            hideLoading()
+            e?.let { er -> er.message?.let { toast(it) } ?:  kotlin.run {  state.value = OrderState.Failed }}
+            if(!result.isNullOrEmpty()){
+                orders.postValue(result)
+            }
+        }
     }
 
     fun sellerGetOrderIn(token: String){
-        state.value = OrderState.IsLoading(true)
-        api.getOrderInBySeller(token).enqueue(object : Callback<WrappedListResponse<Order>>{
-            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
-                println("OnFailure : ${t.message}")
-                state.value = OrderState.IsLoading(false)
+        setLoading()
+        orderRepository.sellerGetOrderIn(token){ resultList, error ->
+            hideLoading()
+            error?.let { er -> er.message?.let { toast(it) } ?:  kotlin.run {  state.value = OrderState.Failed }}
+            if(!resultList.isNullOrEmpty()){
+                orders.postValue(resultList)
             }
-
-            override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        val data = body.data
-                        orders.postValue(data)
-                    }else{
-                        println("status false ${body.message}")
-                        state.value = OrderState.ShowToast("status false ${body.message}")
-                    }
-                }else{
-                    println("tidak mendapat response ${response.message()}")
-                    state.value = OrderState.ShowToast("tidak mendapat response ${response.message()}")
-                }
-                state.value = OrderState.IsLoading(false)
-            }
-
-        })
+        }
     }
 
-    fun decline(token: String, id : Int, role : String){
-        state.value = OrderState.IsLoading(true)
-        api.decline(token, id, role).enqueue(object : Callback<WrappedResponse<Order>>{
-            override fun onFailure(call: Call<WrappedResponse<Order>>, t: Throwable) {
-                println("OnFailure : ${t.message}")
-                state.value = OrderState.IsLoading(false)
-            }
-
-            override fun onResponse(call: Call<WrappedResponse<Order>>, response: Response<WrappedResponse<Order>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        state.value = OrderState.ShowToast("berhasil menolak pesanan")
-                        println("berhasil menolak pesanan")
-                    }else{
-                        println("status false ${body.message}")
-                        state.value = OrderState.ShowToast("status false ${body.message}")
-                    }
-                }else{
-                    println("not response ${response.message()}")
-                    state.value = OrderState.ShowToast("not response ${response.message()}")
-                }
-                state.value = OrderState.IsLoading(false)
-            }
-
-        })
+    fun reject(token: String, orderId : Int, role : String){
+        setLoading()
+        orderRepository.decline(token, orderId, role){ resultBool, error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            if(resultBool){ state.value = OrderState.SuccessDelete }
+        }
     }
 
     fun validate(offer_price: String) : Boolean{
@@ -141,10 +80,19 @@ class OrderViewModel : ViewModel(){
 
     fun getState() = state
     fun listenToOrders() = orders
+    fun listenToRole() = userRole
+
 }
 sealed class OrderState{
-    data class IsLoading(var state : Boolean = false) : OrderState()
+    object SuccessDelete : OrderState()
+    object Failed : OrderState()
+    object Success : OrderState()
+    data class IsLoading(var state : Boolean) : OrderState()
     data class ShowToast(var message : String) : OrderState()
     data class Validate(var offer_price : String) : OrderState()
     object Reset : OrderState()
+}
+
+enum class UserRole {
+    SELLER, BUYER
 }

@@ -55,4 +55,6 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:2.2.0"
     implementation "io.coil-kt:coil:0.11.0"
     implementation 'com.fxn769:pix:1.4.4'
+
+    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
 }

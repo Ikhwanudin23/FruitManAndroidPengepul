@@ -25,7 +25,7 @@ class CollectorWaitingAdapter (private var orders : MutableList<Order>, private 
                 waiting_desc.text = "Menunggu Konfirmasi dari ${order.seller.name} dengan ${order.product.name}"
                 btn_decline.setOnClickListener {
                     val role = "collector_id"
-                    orderViewModel.decline("Bearer ${FruitmanUtil.getToken(context)}", order.id!!, role)
+                    orderViewModel.reject("Bearer ${FruitmanUtil.getToken(context)}", order.id!!, role)
                     Toast.makeText(context, "Berhasil Menolak Pesanan", Toast.LENGTH_LONG).show()
                 }
                 setOnClickListener {
@@ -42,10 +42,7 @@ class CollectorWaitingAdapter (private var orders : MutableList<Order>, private 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_collector_waiting, parent, false)
-        )
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_collector_waiting, parent, false))
     }
 
     override fun getItemCount() = orders.size

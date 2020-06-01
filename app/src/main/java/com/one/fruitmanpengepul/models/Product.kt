@@ -12,5 +12,5 @@ data class Product(
     @SerializedName("address") var address : String? = null,
     @SerializedName("image") var image : String? = null,
     @SerializedName("price")var price : String? = null,
-    @SerializedName("user") var user : User
+    @SerializedName("user") var user : User? = null
 ) : Parcelable
