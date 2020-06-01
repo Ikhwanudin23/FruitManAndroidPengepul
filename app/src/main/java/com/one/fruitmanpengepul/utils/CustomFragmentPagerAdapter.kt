@@ -18,4 +18,8 @@ class CustomFragmentPagerAdapter (fm : FragmentManager) : FragmentPagerAdapter(f
     override fun getCount() = fragments.size
 
     override fun getPageTitle(position: Int) = titles[position]
+
+    fun changeTitleAtPosition(position: Int, t: String) {
+        titles.set(position, t)
+    }
 }
