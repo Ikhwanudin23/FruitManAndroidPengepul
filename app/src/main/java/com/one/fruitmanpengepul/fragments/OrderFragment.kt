@@ -21,4 +21,5 @@ class OrderFragment : Fragment(R.layout.fragment_order){
         view.viewpager.adapter = fragmentAdapter
         view.tabs.setupWithViewPager(view.viewpager)
     }
+
 }

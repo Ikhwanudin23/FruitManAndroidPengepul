@@ -6,35 +6,26 @@
         app:cardCornerRadius="6dp"
         android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
             android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <LinearLayout
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+        <TextView
+                android:id="@+id/waiting_desc"
+                android:textSize="16sp"
+                android:text="@string/lorem_long"
+                android:layout_marginStart="16dp"
+                android:maxLines="5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="38dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_height="38dp"/>
-            <TextView
-                    android:id="@+id/waiting_desc"
-                    android:textSize="16sp"
-                    android:text="@string/lorem_long"
-                    android:layout_marginStart="16dp"
-                    android:maxLines="5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-        </LinearLayout>
+                android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
-                android:layout_gravity="end"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/waiting_desc"
+                android:id="@+id/btn_decline"
                 android:textAllCaps="false"
                 android:textColor="@color/colorDanger"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -43,6 +34,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+                android:visibility="gone"
+                android:layout_marginRight="5dp"
+                android:id="@+id/btn_confirmed"
+                android:layout_below="@id/waiting_desc"
+                android:layout_toLeftOf="@id/btn_decline"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:text="Konfirmasi"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

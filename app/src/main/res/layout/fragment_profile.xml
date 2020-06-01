@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     <LinearLayout
+            android:id="@+id/linear_profile"
             android:layout_margin="16dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -32,4 +33,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
-</ScrollView>
+
+    <TextView
+            android:id="@+id/tv_my_product"
+            android:layout_margin="10dp"
+            android:layout_below="@id/linear_profile"
+            android:textSize="28sp"
+            android:text="Produk Saya"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_margin="10dp"
+            android:layout_below="@id/tv_my_product"
+            android:id="@+id/rv_my_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@drawable/ic_add"
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp" />
+
+    <ProgressBar
+            android:layout_centerInParent="true"
+            android:id="@+id/pb_my_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+</RelativeLayout>

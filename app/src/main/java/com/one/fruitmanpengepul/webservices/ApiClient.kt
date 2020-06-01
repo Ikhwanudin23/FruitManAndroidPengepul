@@ -1,15 +1,15 @@
 package com.one.fruitmanpengepul.webservices
 
 import com.google.gson.annotations.SerializedName
+import com.one.fruitmanpengepul.models.Order
+import com.one.fruitmanpengepul.models.Product
 import com.one.fruitmanpengepul.models.User
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 object ApiClient {
@@ -45,6 +45,51 @@ interface ApiService {
     @POST("api/user/register")
     fun register(@Field("name") name : String, @Field("email") email : String, @Field("password") password: String)
             : Call<WrappedResponse<User>>
+
+    @FormUrlEncoded
+    @POST("api/order/{id}/decline")
+    fun decline(
+        @Header("Authorization") token : String,
+        @Path("id")id : Int,
+        @Field("role") role : String
+    ) : Call<WrappedResponse<Order>>
+
+    @GET("api/product")
+    fun getAllProduct(@Header("Authorization") token : String) : Call<WrappedListResponse<Product>>
+
+    @GET("api/product/show")
+    fun getMyProduct(@Header("Authorization") token : String) : Call<WrappedListResponse<Product>>
+
+    @Multipart
+    @POST("api/product/store")
+    fun postProduct (
+        @Header("Authorization") token : String,
+        @Part("name")name : String,
+        @Part("price") price : Int,
+        @Part("address") address : String,
+        @Part("description") description : String,
+        @Part("image") image : String
+    ) : Call<WrappedResponse<Product>>
+
+    @FormUrlEncoded
+    @POST("api/order/store")
+    fun postOrder(
+        @Header("Authorization") token : String,
+        @Field("seller_id") seller_id : Int,
+        @Field("product_id") product_id : Int,
+        @Field("offer_price") offer_price : Int
+    ) : Call<WrappedResponse<Order>>
+
+    @GET("api/order/collector/waiting")
+    fun getOrdeWaitingrByCollector(
+        @Header("Authorization") token : String
+    ) : Call<WrappedListResponse<Order>>
+
+    @GET("api/order/seller/orderin")
+    fun getOrderInBySeller(
+        @Header("Authorization") token : String
+    ) : Call<WrappedListResponse<Order>>
+
 }
 
 data class WrappedResponse<T>(

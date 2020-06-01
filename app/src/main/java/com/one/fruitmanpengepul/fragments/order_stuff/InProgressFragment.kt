@@ -18,8 +18,8 @@ class InProgressFragment : Fragment(R.layout.fragment_in_progress){
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         orderViewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
-        orderViewModel.listenToInPlaceOrder().observe(viewLifecycleOwner, Observer { handle(it) })
-        orderViewModel.fetchDataPalsuInProgress()
+        //orderViewModel.listenToInPlaceOrder().observe(viewLifecycleOwner, Observer { handle(it) })
+        //orderViewModel.fetchDataPalsuInProgress()
     }
 
     private fun setupUI(){

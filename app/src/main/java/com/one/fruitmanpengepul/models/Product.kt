@@ -5,11 +5,12 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class User(
+data class Product(
     @SerializedName("id") var id : Int? = null,
     @SerializedName("name") var name : String? = null,
-    @SerializedName("email") var email : String? = null,
-    @SerializedName("api_token") var token : String? = null,
+    @SerializedName("description") var description : String? = null,
+    @SerializedName("address") var address : String? = null,
     @SerializedName("image") var image : String? = null,
-    @SerializedName("address") var address : String? = null
+    @SerializedName("price")var price : String? = null,
+    @SerializedName("user") var user : User
 ) : Parcelable
