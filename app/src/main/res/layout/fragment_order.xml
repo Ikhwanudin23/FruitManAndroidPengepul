@@ -1,42 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
     <LinearLayout
+            android:layout_margin="16dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                app:tabMode="fixed"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.Button"
+        <TextView
+                android:layout_marginTop="26dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/title_purchasement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <com.google.android.material.card.MaterialCardView
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+            <LinearLayout
+                    android:weightSum="3"
+                    android:padding="16dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </com.google.android.material.tabs.TabLayout>
+                <LinearLayout
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/btn_buyer_waiting"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:src="@drawable/ic_baseline_access_time_24"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"/>
+                    <TextView
+                            android:textAlignment="center"
+                            android:maxLines="2"
+                            android:text="@string/buyer_waiting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
 
-        <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewpager"
+                <LinearLayout
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/btn_buyer_in_progress"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:src="@drawable/ic_baseline_access_time_24"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"/>
+                    <TextView
+                            android:textAlignment="center"
+                            android:maxLines="2"
+                            android:text="@string/buyer_in_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/btn_buyer_completed"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:src="@drawable/ic_baseline_access_time_24"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"/>
+                    <TextView
+                            android:textAlignment="center"
+                            android:maxLines="2"
+                            android:text="@string/buyer_completed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <TextView
+                android:layout_marginTop="26dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/title_sale"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"/>
+        <com.google.android.material.card.MaterialCardView
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:weightSum="3"
+                    android:padding="16dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </androidx.viewpager.widget.ViewPager>
+                <LinearLayout
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/btn_seller_order_in"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:src="@drawable/ic_baseline_access_time_24"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"/>
+                    <TextView
+                            android:textAlignment="center"
+                            android:maxLines="2"
+                            android:text="@string/seller_order_in"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/btn_seller_in_progress"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:src="@drawable/ic_baseline_access_time_24"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"/>
+                    <TextView
+                            android:textAlignment="center"
+                            android:maxLines="2"
+                            android:text="@string/buyer_in_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/btn_seller_completed"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:src="@drawable/ic_baseline_access_time_24"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"/>
+                    <TextView
+                            android:textAlignment="center"
+                            android:maxLines="2"
+                            android:text="@string/buyer_completed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 
+</ScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            app:icon="@drawable/ic_autorenew"
-            android:text="@string/switcher_buyer"
-            android:textAllCaps="false"
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="20dp" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

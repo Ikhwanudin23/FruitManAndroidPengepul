@@ -42,59 +42,6 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel(){
         return true
     }
 
-    /*fun register(name : String, email: String, password: String){
-        setLoading()
-        api.register(name, email, password).enqueue(object: Callback<WrappedResponse<User>>{
-            override fun onFailure(call: Call<WrappedResponse<User>>, t: Throwable) {
-                println(t.message)
-                state.value = UserState.ShowToast(t.message.toString())
-                hideLoading()
-            }
-
-            override fun onResponse(call: Call<WrappedResponse<User>>, response: Response<WrappedResponse<User>>) {
-                if(response.isSuccessful){
-                    val b = response.body()
-                    b?.let {
-                        if(it.status){
-                            state.value = UserState.Success(it.data?.token!!)
-                        }else{
-                            state.value = UserState.ShowAlert("Tidak dapat masuk. Periksa email dan kata sandi anda")
-                        }
-                    }
-                }else{
-                    state.value = UserState.ShowToast("Register gagal. Mungkin email ini sudah pernah didaftarkan")
-                }
-                hideLoading()
-            }
-        })
-    }*/
-
-    /*fun login(email: String, password: String){
-        setLoading()
-        api.login(email, password).enqueue(object : Callback<WrappedResponse<User>>{
-            override fun onFailure(call: Call<WrappedResponse<User>>, t: Throwable) {
-                println(t.message)
-                hideLoading()
-                state.value = UserState.ShowToast(t.message.toString())
-            }
-
-            override fun onResponse(call: Call<WrappedResponse<User>>, response: Response<WrappedResponse<User>>) {
-                if(response.isSuccessful){
-                    val b = response.body()
-                    b?.let {
-                        if(it.status){
-                            state.value = UserState.Success(it.data?.token!!)
-                        }else{
-                            state.value = UserState.ShowAlert("Tidak dapat masuk. Periksa email dan kata sandi anda")
-                        }
-                    }
-                }else{
-                    state.value = UserState.ShowAlert("Tidak dapat masuk. Periksa email dan kata sandi anda")
-                }
-                hideLoading()
-            }
-        })
-    }*/
 
     fun register(name: String, email: String, password: String){
         setLoading()

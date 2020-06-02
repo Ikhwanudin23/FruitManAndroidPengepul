@@ -1,4 +1,4 @@
-package com.one.fruitmanpengepul
+package com.one.fruitmanpengepul.ui.login_activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import com.one.fruitmanpengepul.R
+import com.one.fruitmanpengepul.ui.register_activity.RegisterActivity
+import com.one.fruitmanpengepul.ui.main_activity.MainActivity
 import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.viewmodels.UserState
 import com.one.fruitmanpengepul.viewmodels.UserViewModel
