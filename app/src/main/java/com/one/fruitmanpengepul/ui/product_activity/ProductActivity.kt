@@ -1,4 +1,4 @@
-package com.one.fruitmanpengepul
+package com.one.fruitmanpengepul.ui.product_activity
 
 import android.app.Activity
 import android.content.Intent
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import coil.api.load
 import com.fxn.pix.Pix
+import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.models.Product
 import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.viewmodels.ProductState

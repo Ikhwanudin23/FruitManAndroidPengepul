@@ -39,7 +39,7 @@ class OrderRepository (private val api : ApiService){
         api.getOrdeWaitingrByCollector(token).enqueue(object : Callback<WrappedListResponse<Order>> {
             override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
                 println("OnFailure : ${t.message}")
-                result(mutableListOf(), Error(t.message.toString()))
+                result(null, Error(t.message.toString()))
             }
 
             override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
@@ -53,7 +53,6 @@ class OrderRepository (private val api : ApiService){
                     }
                 }else{
                     result(null, Error("Error with status code ${response.code()}"))
-
                 }
             }
         })
@@ -108,11 +107,10 @@ class OrderRepository (private val api : ApiService){
     }
 
     fun sellerGetOrderIn(token: String, result: (List<Order>?, Error?) -> Unit){
-        println(token)
         api.getOrderInBySeller(token).enqueue(object : Callback<WrappedListResponse<Order>> {
             override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
                 println("OnFailure : ${t.message}")
-                result(mutableListOf(), Error(t.message.toString()))
+                result(null, Error(t.message.toString()))
             }
 
             override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
@@ -122,10 +120,10 @@ class OrderRepository (private val api : ApiService){
                         val data = body.data
                         result(data, null)
                     }else{
-                        result(mutableListOf(), Error(body.message))
+                        result(null, Error(body.message))
                     }
                 }else{
-                    result(mutableListOf(), Error("Error with status code ${response.code()}"))
+                    result(null, Error("Error with status code ${response.code()}"))
                 }
             }
         })
@@ -144,8 +142,7 @@ class OrderRepository (private val api : ApiService){
                     if (body?.status!!){
                         val data = body.data
                         result(data, null)
-                        println(data)
-                    }else{
+                     }else{
                         println(body.message)
                         result(null, Error(body.message))
                     }
@@ -201,7 +198,6 @@ class OrderRepository (private val api : ApiService){
                     result(false, Error("${response.code()}"))
                 }
             }
-
         })
     }
 
@@ -257,6 +253,7 @@ class OrderRepository (private val api : ApiService){
         api.completed(token, id.toInt()).enqueue(object : Callback<WrappedResponse<Order>>{
             override fun onFailure(call: Call<WrappedResponse<Order>>, t: Throwable) {
                 println(t.message)
+                result(false, Error(t.message.toString()))
             }
 
             override fun onResponse(call: Call<WrappedResponse<Order>>, response: Response<WrappedResponse<Order>>) {

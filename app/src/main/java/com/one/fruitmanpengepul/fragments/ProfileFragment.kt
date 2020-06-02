@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
-import com.one.fruitmanpengepul.ProductActivity
+import com.one.fruitmanpengepul.ui.product_activity.ProductActivity
 import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.adapters.seller.SellerMyProductAdapter
 import com.one.fruitmanpengepul.models.User

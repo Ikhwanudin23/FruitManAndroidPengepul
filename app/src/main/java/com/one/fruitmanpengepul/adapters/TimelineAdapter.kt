@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.one.fruitmanpengepul.DetailProductActivity
+import com.one.fruitmanpengepul.ui.detail_product_activity.DetailProductActivity
 import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.models.Product
 import kotlinx.android.synthetic.main.item_timeline.view.*

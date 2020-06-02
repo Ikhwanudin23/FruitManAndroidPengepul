@@ -1,10 +1,13 @@
 package com.one.fruitmanpengepul
 
 import android.app.Application
-import android.util.Log.DEBUG
+import com.one.fruitmanpengepul.ui.order_in_progress_activity.OrderInViewModel
 import com.one.fruitmanpengepul.repositories.OrderRepository
 import com.one.fruitmanpengepul.repositories.ProductRepository
 import com.one.fruitmanpengepul.repositories.UserRepository
+import com.one.fruitmanpengepul.ui.buyer_in_progress_activity.BuyerInProgressViewModel
+import com.one.fruitmanpengepul.ui.seller_in_progress_activity.SellerInProgressViewModel
+import com.one.fruitmanpengepul.ui.waiting_activity.WaitingOrderViewModel
 import com.one.fruitmanpengepul.viewmodels.OrderViewModel
 import com.one.fruitmanpengepul.viewmodels.ProductViewModel
 import com.one.fruitmanpengepul.viewmodels.UserViewModel
@@ -35,8 +38,12 @@ val repositoryModule = module {
 
 val viewModelModules = module {
     viewModel { ProductViewModel(get()) }
-    viewModel { OrderViewModel(get()) }
     viewModel { UserViewModel(get()) }
+    viewModel { OrderInViewModel(get()) }
+    viewModel { WaitingOrderViewModel(get()) }
+    viewModel { SellerInProgressViewModel(get()) }
+    viewModel { BuyerInProgressViewModel(get()) }
+    viewModel { OrderViewModel(get()) }
 }
 
 val retrofitModule = module {

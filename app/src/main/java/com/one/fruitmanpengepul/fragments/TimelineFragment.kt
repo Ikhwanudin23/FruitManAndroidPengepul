@@ -20,8 +20,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_timeline.apply {
-            layoutManager = LinearLayoutManager(activity!!)
-            adapter = TimelineAdapter(mutableListOf(), activity!!)
+            layoutManager = LinearLayoutManager(requireActivity())
+            adapter = TimelineAdapter(mutableListOf(), requireActivity())
 
         }
         productViewModel.getState().observer(viewLifecycleOwner, Observer { handleui(it) })

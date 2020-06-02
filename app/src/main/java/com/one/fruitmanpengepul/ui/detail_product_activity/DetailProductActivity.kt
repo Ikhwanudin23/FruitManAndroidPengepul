@@ -1,14 +1,11 @@
-package com.one.fruitmanpengepul
+package com.one.fruitmanpengepul.ui.detail_product_activity
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import coil.api.load
-import com.one.fruitmanpengepul.models.Order
+import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.models.Product
 import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.viewmodels.OrderState

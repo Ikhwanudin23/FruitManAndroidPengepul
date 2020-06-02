@@ -16,15 +16,31 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".ProductActivity"></activity>
         <activity
-                android:name=".DetailProductActivity"
+                android:name=".ui.buyer_in_progress_activity.BuyerInProgressActivity"
+                android:label="@string/title_activity_buyer_in_progress"
+                android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+                android:name=".ui.seller_in_progress_activity.SellerInProgressActivity"
+                android:label="@string/title_activity_seller_in_progress"
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".ui.waiting_activity.WaitingOrderActivity"
+                android:label="@string/title_activity_waiting_order"
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".ui.order_in_progress_activity.OrderInActivity"
+                android:label="@string/title_activity_order_in"
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.product_activity.ProductActivity" />
+        <activity
+                android:name=".ui.detail_product_activity.DetailProductActivity"
                 android:label="@string/title_activity_detail_product"
                 android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".ui.register_activity.RegisterActivity" />
+        <activity android:name=".ui.login_activity.LoginActivity" />
         <activity
-                android:name=".MainActivity"
+                android:name=".ui.main_activity.MainActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

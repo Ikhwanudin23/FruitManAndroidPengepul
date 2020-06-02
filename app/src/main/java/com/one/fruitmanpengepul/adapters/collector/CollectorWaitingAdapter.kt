@@ -5,22 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.models.Order
-import com.one.fruitmanpengepul.models.OrderWaiting
+import com.one.fruitmanpengepul.ui.waiting_activity.WaitingOrderViewModel
 import com.one.fruitmanpengepul.utils.FruitmanUtil
-import com.one.fruitmanpengepul.viewmodels.OrderState
-import com.one.fruitmanpengepul.viewmodels.OrderViewModel
-import kotlinx.android.synthetic.main.list_item_collector_waiting.*
 import kotlinx.android.synthetic.main.list_item_collector_waiting.view.*
 
-class CollectorWaitingAdapter (private var orders : MutableList<Order>, private var context : Context, private var orderViewModel : OrderViewModel)
+class CollectorWaitingAdapter (private var orders : MutableList<Order>, private var context : Context, private var orderViewModel : WaitingOrderViewModel)
     : RecyclerView.Adapter<CollectorWaitingAdapter.ViewHolder>(){
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-        fun bind(order : Order, context: Context, orderViewModel: OrderViewModel){
+        fun bind(order : Order, context: Context, orderViewModel: WaitingOrderViewModel){
             with(itemView){
                 waiting_desc.text = "Menunggu Konfirmasi dari ${order.seller.name} dengan ${order.product.name}"
                 btn_decline.setOnClickListener {

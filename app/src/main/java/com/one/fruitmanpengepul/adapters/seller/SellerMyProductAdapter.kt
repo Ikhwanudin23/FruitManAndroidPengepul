@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.one.fruitmanpengepul.ProductActivity
+import com.one.fruitmanpengepul.ui.product_activity.ProductActivity
 import com.one.fruitmanpengepul.R
 import com.one.fruitmanpengepul.models.Product
 import kotlinx.android.synthetic.main.item_myproduct.view.*
