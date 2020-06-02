@@ -51,7 +51,7 @@ class WaitingFragment : Fragment(R.layout.fragment_waiting_confirmation){
             adapter = if(role == UserRole.BUYER){
                 CollectorWaitingAdapter(mutableListOf(), requireActivity(), orderViewModel)
             }else{
-                SellerOrderInAdapter(mutableListOf(), requireActivity())
+                SellerOrderInAdapter(mutableListOf(), requireActivity(), orderViewModel)
             }
         }
     }

@@ -21,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         supportActionBar?.hide()
         goToRegister()
-        //userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         doLogin()
         userViewModel.listenToUIState().observer(this, Observer { handleUIState(it) })
     }
@@ -61,9 +60,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToRegister() = btn_goto_register.setOnClickListener {
-        startActivity(Intent(this, RegisterActivity::class.java))
-    }
+    private fun goToRegister() = btn_goto_register.setOnClickListener { startActivity(Intent(this@LoginActivity, RegisterActivity::class.java)) }
 
     private fun showAlert(m : String){
         AlertDialog.Builder(this).apply {

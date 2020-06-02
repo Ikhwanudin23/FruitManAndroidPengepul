@@ -119,4 +119,6 @@
     <string name="title_waiting">Waiting</string>
     <string name="title_order_in">Order in</string>
     <string name="success_confirmed">Berhasil Konfirmasi Pesanan</string>
+    <string name="text_arrived">Saya Sudah Sampai Tujuan</string>
+    <string name="arrived">"notifikasi berhasil di kirimkan ke "</string>
 </resources>

@@ -34,8 +34,6 @@ class OrderRepository (private val api : ApiService){
         })
     }
 
-
-
     fun collectorWaitingOrder(token: String, result: (List<Order>?, Error?) -> Unit){
         println(token)
         api.getOrdeWaitingrByCollector(token).enqueue(object : Callback<WrappedListResponse<Order>> {
@@ -61,7 +59,53 @@ class OrderRepository (private val api : ApiService){
         })
     }
 
+    fun collectorOrderInProgress(token: String, result: (List<Order>?, Error?) -> Unit){
+        api.getOrderInProgressByCollector(token).enqueue(object : Callback<WrappedListResponse<Order>>{
+            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
+                println(t.message)
+                result(null, Error(t.message))
+            }
 
+            override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        val data = body.data
+                        result(data, null)
+                    }else{
+                        result(null, Error(body.message))
+                    }
+                }else{
+                    result(null, Error(response.message()))
+                }
+            }
+
+        })
+    }
+
+    fun collectorOrderCompleted(token: String, result: (List<Order>?, Error?) -> Unit){
+        api.getOrderCompletedByCollector(token).enqueue(object : Callback<WrappedListResponse<Order>>{
+            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
+                println(t.message)
+                result(null, Error(t.message))
+            }
+
+            override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        val data = body.data
+                        result(data, null)
+                    }else{
+                        result(null, Error(body.message))
+                    }
+                }else{
+                    result(null, Error(response.message()))
+                }
+            }
+
+        })
+    }
 
     fun sellerGetOrderIn(token: String, result: (List<Order>?, Error?) -> Unit){
         println(token)
@@ -84,6 +128,57 @@ class OrderRepository (private val api : ApiService){
                     result(mutableListOf(), Error("Error with status code ${response.code()}"))
                 }
             }
+        })
+    }
+
+    fun sellerGetOrderInProgress(token: String, result: (List<Order>?, Error?) -> Unit){
+        api.getOrderInprogressBySeller(token).enqueue(object : Callback<WrappedListResponse<Order>>{
+            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
+                println(t.message)
+                result(null, Error(t.message))
+            }
+
+            override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        val data = body.data
+                        result(data, null)
+                        println(data)
+                    }else{
+                        println(body.message)
+                        result(null, Error(body.message))
+                    }
+                }else{
+                    println(response.message())
+                    result(null, Error(response.message()))
+                }
+            }
+
+        })
+    }
+
+    fun sellergetOrderCompleted(token: String, result: (List<Order>?, Error?) -> Unit){
+        api.getOrderCompletedBySeller(token).enqueue(object : Callback<WrappedListResponse<Order>>{
+            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
+                println(t.message)
+                result(null, Error(t.message))
+            }
+
+            override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        val data = body.data
+                        result(data, null)
+                    }else{
+                        result(null, Error(body.message))
+                    }
+                }else{
+                    result(null, Error(response.message()))
+                }
+            }
+
         })
     }
 
@@ -128,6 +223,51 @@ class OrderRepository (private val api : ApiService){
                     }
                 }else{
                     println(response.message())
+                    result(false, Error(response.message()))
+                }
+            }
+
+        })
+    }
+
+    fun arrived(token: String, id : String, result: (Boolean, Error?) -> Unit){
+        api.arrived(token, id.toInt()).enqueue(object : Callback<WrappedResponse<Order>>{
+            override fun onFailure(call: Call<WrappedResponse<Order>>, t: Throwable) {
+                println(t.message)
+                result(false, Error(t.message))
+            }
+
+            override fun onResponse(call: Call<WrappedResponse<Order>>, response: Response<WrappedResponse<Order>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        result(true, null)
+                    }else{
+                        result(false, Error(body.message))
+                    }
+                }else{
+                    result(false, Error(response.message()))
+                }
+            }
+
+        })
+    }
+
+    fun completed(token: String, id : String, result: (Boolean, Error?) -> Unit){
+        api.completed(token, id.toInt()).enqueue(object : Callback<WrappedResponse<Order>>{
+            override fun onFailure(call: Call<WrappedResponse<Order>>, t: Throwable) {
+                println(t.message)
+            }
+
+            override fun onResponse(call: Call<WrappedResponse<Order>>, response: Response<WrappedResponse<Order>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        result(true, null)
+                    }else{
+                        result(false, Error(body.message))
+                    }
+                }else{
                     result(false, Error(response.message()))
                 }
             }

@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.one.fruitmanpengepul.R
 import kotlinx.android.synthetic.main.list_item_collector_in_place.view.*
 
-class CollectorInProgressInPlaceAdapter(private var datas : MutableList<String>, private var context: Context) : RecyclerView.Adapter<CollectorInProgressInPlaceAdapter.ViewHolder>(){
+class CollectorInProgressInPlaceAdapter(private var datas : MutableList<String>, private var context: Context)
+    : RecyclerView.Adapter<CollectorInProgressInPlaceAdapter.ViewHolder>(){
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         fun bind(data : String, context: Context){
             with(itemView){

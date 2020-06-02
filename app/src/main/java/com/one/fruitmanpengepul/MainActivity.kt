@@ -91,12 +91,20 @@ class MainActivity : AppCompatActivity() {
         when(it){
             is OrderState.ShowToast -> toast(it.message)
             is OrderState.SuccessDelete -> {
-                fetch()
+                //fetch()
                 toast(resources.getString(R.string.info_success_delete))
             }
             is OrderState.SuccessConfirmed -> {
-                fetch()
+                //fetch()
                 toast(resources.getString(R.string.success_confirmed))
+            }
+            is OrderState.SuccessArrived -> {
+                //fetch()
+                toast(resources.getString(R.string.arrived))
+            }
+            is OrderState.SuccessCompleted -> {
+                //fetch()
+                toast("complete")
             }
         }
     }

@@ -12,29 +12,32 @@ import com.one.fruitmanpengepul.utils.FruitmanUtil
 import com.one.fruitmanpengepul.viewmodels.OrderViewModel
 import kotlinx.android.synthetic.main.list_item_collector_waiting.view.*
 
-class SellerOrderInAdapter (private var orders : MutableList<Order>, private var context : Context, private var orderViewModel: OrderViewModel)
-    : RecyclerView.Adapter<SellerOrderInAdapter.ViewHolder>(){
+class SellerOrderInAdapter(
+    private var orders: MutableList<Order>,
+    private var context: Context,
+    private var orderViewModel: OrderViewModel
+) : RecyclerView.Adapter<SellerOrderInAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-        fun bind(order : Order, context: Context, orderViewModel: OrderViewModel){
-            with(itemView){
-                waiting_desc.text = "${order.collector.name} menawar dengan harga ${order.offer_price} pada ${order.product.name}"
-                setOnClickListener {
-                    Toast.makeText(context,"Ya", Toast.LENGTH_LONG).show()
-                }
-                btn_confirmed.visibility = View.VISIBLE
-                btn_confirmed.setOnClickListener {
-                    orderViewModel.confirmed("Bearer ${FruitmanUtil.getToken(context)}", order.id.toString())
-                }
-                btn_decline.setOnClickListener {
-                    val role = "seller_id"
-                    orderViewModel.reject("Bearer ${FruitmanUtil.getToken(context)}", order.id!!, role)
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(order: Order, context: Context, orderViewModel: OrderViewModel) {
+            with(itemView) {
+                if (order.status == "1" && order.arrive == false) {
+                    waiting_desc.text = "${order.collector.name} menawar dengan harga ${order.offer_price} pada ${order.product.name}"
+                    setOnClickListener { Toast.makeText(context, "Ya", Toast.LENGTH_LONG).show() }
+                    btn_confirmed.visibility = View.VISIBLE
+                    btn_confirmed.setOnClickListener {
+                        orderViewModel.confirmed("Bearer ${FruitmanUtil.getToken(context)}", order.id.toString())
+                    }
+                    btn_decline.setOnClickListener {
+                        val role = "seller_id"
+                        orderViewModel.reject("Bearer ${FruitmanUtil.getToken(context)}", order.id!!, role)
+                    }
                 }
             }
         }
     }
 
-    fun changelist(i : List<Order>){
+    fun changelist(i: List<Order>) {
         orders.clear()
         orders.addAll(i)
         notifyDataSetChanged()
@@ -48,5 +51,6 @@ class SellerOrderInAdapter (private var orders : MutableList<Order>, private var
     }
 
     override fun getItemCount() = orders.size
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)  = holder.bind(orders[position], context, orderViewModel)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(orders[position], context, orderViewModel)
 }

@@ -11,5 +11,8 @@ data class Order(
     @SerializedName("collector") var collector : User,
     @SerializedName("product") var product: Product,
     @SerializedName("offer_price") var offer_price : Int? = 0,
-    @SerializedName("status") var status : String? = null
+    @SerializedName("status") var status : String? = null,
+    @SerializedName("arrive") var arrive : Boolean? = false,
+    @SerializedName("complete") var complete : Boolean? = false
+
 ) : Parcelable

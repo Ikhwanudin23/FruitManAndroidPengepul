@@ -23,12 +23,13 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
     private fun hideLoading() { state.value = OrderState.IsLoading(false) }
     private fun toast(message: String) { state.value = OrderState.ShowToast(message) }
     private fun successConfirmed() { state.value = OrderState.SuccessConfirmed }
+    private fun successArrived() { state.value = OrderState.SuccessArrived }
+    private fun successCompleted() { state.value = OrderState.SuccessCompleted }
 
     fun switch(){
         val currentRole = userRole.value!!
         if (currentRole == UserRole.BUYER){ userRole.value = UserRole.SELLER }else{ userRole.value = UserRole.BUYER }
     }
-
 
     fun postOrder(token: String, seller_id : Int, product_id : Int, offer_price: String){
         setLoading()
@@ -51,6 +52,24 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
         }
     }
 
+    fun collectorGetOrderInProgress(token: String){
+        setLoading()
+        orderRepository.collectorOrderInProgress(token){result, error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result?.let { orders.postValue(it) }
+        }
+    }
+
+    fun collectorGetOrderCompleted(token: String){
+        setLoading()
+        orderRepository.collectorOrderCompleted(token){result, error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result?.let { orders.postValue(it) }
+        }
+    }
+
     fun sellerGetOrderIn(token: String){
         setLoading()
         orderRepository.sellerGetOrderIn(token){ resultList, error ->
@@ -59,6 +78,24 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
             if(!resultList.isNullOrEmpty()){
                 orders.postValue(resultList)
             }
+        }
+    }
+
+    fun sellerGetOrderInProgress(token: String){
+        setLoading()
+        orderRepository.sellerGetOrderInProgress(token){result, error->
+            hideLoading()
+            println(error)
+            println(result)
+            error?.let { toast(it.message.toString()) }
+            result?.let { orders.postValue(it) }
+        }
+    }
+
+    fun sellerGetOrderCompleted(token: String){
+        orderRepository.sellergetOrderCompleted(token){result, error ->
+            error?.let { toast(it.message.toString()) }
+            result?.let { orders.postValue(it) }
         }
     }
 
@@ -71,12 +108,30 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
         }
     }
 
+    fun arrived(token: String, id: String){
+        setLoading()
+        orderRepository.arrived(token, id){result, error ->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result?.let { successArrived() }
+        }
+    }
+
     fun confirmed(token: String, id : String){
         setLoading()
         orderRepository.confirmed(token, id){result, error ->
             hideLoading()
             error?.let { toast(it.message.toString()) }
-            result?.let { successConfirmed() }
+            result.let { successConfirmed() }
+        }
+    }
+
+    fun completed(token: String, id: String){
+        setLoading()
+        orderRepository.completed(token, id){result, error->
+            hideLoading()
+            error?.let { toast(it.message.toString()) }
+            result.let { successConfirmed() }
         }
     }
 
@@ -94,8 +149,10 @@ class OrderViewModel(private val orderRepository : OrderRepository) : ViewModel(
 
 }
 sealed class OrderState{
+    object SuccessArrived : OrderState()
     object SuccessDelete : OrderState()
     object SuccessConfirmed : OrderState()
+    object SuccessCompleted : OrderState()
     object Failed : OrderState()
     object Success : OrderState()
     data class IsLoading(var state : Boolean) : OrderState()

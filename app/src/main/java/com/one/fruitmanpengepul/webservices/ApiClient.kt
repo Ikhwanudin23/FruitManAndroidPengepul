@@ -51,18 +51,12 @@ interface ApiService {
     @GET("api/user/profile")
     fun profile(@Header("Authorization") token : String) : Call<WrappedResponse<User>>
 
-    @FormUrlEncoded
-    @POST("api/order/{id}/decline")
-    fun decline(
-        @Header("Authorization") token : String,
-        @Path("id")id : Int, @Field("role") role : String
-    ) : Call<WrappedResponse<Order>>
-
-    @GET("order/{id}/confirmed")
-    fun confirmed(
-        @Header("Authorization") token : String,
-        @Path("id") id : Int
-    ) : Call<WrappedResponse<Order>>
+    @Multipart
+    @POST("api/user/profile/update")
+    fun updateprofile(@Header("Authorization") token : String,
+                      @PartMap partMap : HashMap<String, RequestBody>,
+                      @Part image : MultipartBody.Part
+    ) : Call<WrappedResponse<User>>
 
     @GET("api/product")
     fun getAllProduct(@Header("Authorization") token : String) : Call<WrappedListResponse<Product>>
@@ -79,7 +73,13 @@ interface ApiService {
     fun updateProduct(@Header("Authorization") token : String,
                       @Path("id") id : Int,
                       @PartMap partMap:  HashMap<String, RequestBody>,
-                      @Part image : MultipartBody.Part) : Call<WrappedResponse<Product>>
+                      @Part image : MultipartBody.Part
+    ) : Call<WrappedResponse<Product>>
+
+    @GET("api/product/{id}/delete")
+    fun deleteproduct(@Header("Authorization") token : String,
+                      @Path("id") id : Int
+    ) : Call<WrappedResponse<Product>>
 
     @FormUrlEncoded
     @POST("api/order/store")
@@ -95,10 +95,55 @@ interface ApiService {
         @Header("Authorization") token : String
     ) : Call<WrappedListResponse<Order>>
 
+    @GET("api/order/collector/inprogress")
+    fun getOrderInProgressByCollector(
+        @Header("Authorization") token : String
+    ) : Call<WrappedListResponse<Order>>
+
+    @GET("api/order/collector/completed")
+    fun getOrderCompletedByCollector(
+        @Header("Authorization") token : String
+    ) : Call<WrappedListResponse<Order>>
+
     @GET("api/order/seller/orderin")
     fun getOrderInBySeller(
         @Header("Authorization") token : String
     ) : Call<WrappedListResponse<Order>>
+
+    @GET("api/order/seller/inprogress")
+    fun getOrderInprogressBySeller(
+        @Header("Authorization") token : String
+    ) : Call<WrappedListResponse<Order>>
+
+    @GET("api/order/seller/completed")
+    fun getOrderCompletedBySeller(
+        @Header("Authorization") token : String
+    ) : Call<WrappedListResponse<Order>>
+
+    @FormUrlEncoded
+    @POST("api/order/{id}/decline")
+    fun decline(
+        @Header("Authorization") token : String,
+        @Path("id")id : Int, @Field("role") role : String
+    ) : Call<WrappedResponse<Order>>
+
+    @GET("api/order/{id}/confirmed")
+    fun confirmed(
+        @Header("Authorization") token : String,
+        @Path("id") id : Int
+    ) : Call<WrappedResponse<Order>>
+
+    @GET("api/order/{id}/arrived")
+    fun arrived(
+        @Header("Authorization") token : String,
+        @Path("id") id : Int
+    ) : Call<WrappedResponse<Order>>
+
+    @GET("api/order/{id}/completed")
+    fun completed(
+        @Header("Authorization") token : String,
+        @Path("id") id : Int
+    ) : Call<WrappedResponse<Order>>
 
 }
 
