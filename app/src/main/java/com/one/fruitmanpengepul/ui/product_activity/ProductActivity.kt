@@ -73,6 +73,7 @@ class ProductActivity : AppCompatActivity() {
             et_price.setText((it.price.toString()))
             et_description.setText(it.description.toString())
             et_address.setText(it.address.toString())
+            iv_product.load(it.image)
         }
     }
 
@@ -109,6 +110,7 @@ class ProductActivity : AppCompatActivity() {
                 //image = it[0]
                 iv_product.load(File(it[0]))
                 imageUrl = it[0]
+                btn_submit.isEnabled = true
             }
         }
     }

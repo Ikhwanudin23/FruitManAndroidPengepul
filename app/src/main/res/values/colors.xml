@@ -5,6 +5,10 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorDanger">#FF5722</color>
     <color name="colorYellow">#FF9800</color>
+    <color name="colorGreen">#55E96A</color>
+    <color name="colorBlue">#28A2CF</color>
+    <color name="trandingStart">#00B09B</color>
     <color name="colorGrey">#B8B8B8</color>
+    <color name="toTransparant">#F6F4F4</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>

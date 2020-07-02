@@ -57,23 +57,22 @@ class UserRepository(private val api : ApiService){
         })
     }
 
-    fun register(name : String, email: String, password: String, result: (String?, Error?) -> Unit){
+    fun register(name : String, email: String, password: String, result: (Boolean, Error?) -> Unit){
         api.register(name, email, password).enqueue(object : Callback<WrappedResponse<User>>{
             override fun onFailure(call: Call<WrappedResponse<User>>, t: Throwable) {
-                println(t.message)
-                result(null, Error(t.message))
+                result(false, Error("onFailure : ${t.message}"))
             }
 
             override fun onResponse(call: Call<WrappedResponse<User>>, response: Response<WrappedResponse<User>>) {
                 if (response.isSuccessful){
                     val body = response.body()
                     if (body?.status!!){
-                        result(body.data!!.token, null)
+                        result(true, null)
                     }else{
-                        result(null, Error(body.message))
+                        result(false, Error(body.message))
                     }
                 }else{
-                    result(null, Error(response.message()))
+                    result(false, Error(response.message()))
                 }
             }
 

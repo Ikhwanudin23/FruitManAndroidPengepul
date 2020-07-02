@@ -45,8 +45,11 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("api/user/register")
-    fun register(@Field("name") name : String, @Field("email") email : String, @Field("password") password: String)
-            : Call<WrappedResponse<User>>
+    fun register(
+        @Field("name") name : String,
+        @Field("email") email : String,
+        @Field("password") password: String
+    ): Call<WrappedResponse<User>>
 
     @GET("api/user/profile")
     fun profile(@Header("Authorization") token : String) : Call<WrappedResponse<User>>

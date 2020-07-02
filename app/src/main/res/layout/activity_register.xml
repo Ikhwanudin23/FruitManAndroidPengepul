@@ -75,6 +75,21 @@
                     android:id="@+id/et_password"
                     android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:hint="Konfirmasi password"
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true"
+                android:id="@+id/in_confirm_password"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:id="@+id/et_confirm_password"
+                    android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"

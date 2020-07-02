@@ -59,4 +59,5 @@ dependencies {
     implementation 'com.fxn769:pix:1.4.4'
 
     implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
+    implementation 'com.github.florent37:shapeofview:1.4.7'
 }

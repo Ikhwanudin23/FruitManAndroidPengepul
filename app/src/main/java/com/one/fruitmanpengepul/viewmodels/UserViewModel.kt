@@ -42,16 +42,6 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel(){
         return true
     }
 
-
-    fun register(name: String, email: String, password: String){
-        setLoading()
-        userRepository.register(name, email, password){result, error->
-            hideLoading()
-            error?.let { toast(it.message.toString()) }
-            result?.let { success(it) }
-        }
-    }
-
     fun login(email: String, password: String){
         setLoading()
         userRepository.login(email, password){result, error ->

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:dist="http://schemas.android.com/apk/distribution"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.one.fruitmanpengepul">
 
     <dist:module dist:instant="true" />
@@ -17,9 +18,19 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <activity
+                android:name=".ui.splashScreen_activity.SplashScreenActivity"
+                android:screenOrientation="portrait"
+                tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
                 android:name=".ui.buyer_in_progress_activity.BuyerInProgressActivity"
                 android:label="@string/title_activity_buyer_in_progress"
-                android:theme="@style/AppTheme.NoActionBar"></activity>
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name=".ui.seller_in_progress_activity.SellerInProgressActivity"
                 android:label="@string/title_activity_seller_in_progress"
@@ -42,11 +53,6 @@
         <activity
                 android:name=".ui.main_activity.MainActivity"
                 android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

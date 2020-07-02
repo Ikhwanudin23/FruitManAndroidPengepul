@@ -19,7 +19,7 @@ class TimelineAdapter(private var products : MutableList<Product>, private var c
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         fun bind(product: Product, context: Context){
             with(itemView){
-                iv_image.load("http://fruitman-app.herokuapp.com/uploads/product/"+product.image)
+                iv_image.load(product.image)
                 tv_name.text = product.name
                 tv_price.text = product.price
                 setOnClickListener {

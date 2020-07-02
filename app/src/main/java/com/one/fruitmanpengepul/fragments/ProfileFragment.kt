@@ -27,8 +27,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_my_product.apply {
-            adapter = SellerMyProductAdapter(mutableListOf(), activity!!)
-            layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
+            adapter = SellerMyProductAdapter(mutableListOf(), requireActivity())
+            layoutManager = LinearLayoutManager(requireActivity())
         }
         productViewModel.getState().observer(viewLifecycleOwner, Observer { handleUI(it) })
         productViewModel.getProducts().observe(viewLifecycleOwner, Observer {
@@ -38,7 +38,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
                 }
             }
         })
-        userViewModel.profile("Bearer ${FruitmanUtil.getToken(activity!!)}")
+        userViewModel.profile("Bearer ${FruitmanUtil.getToken(requireActivity())}")
         userViewModel.listenToUser().observe(viewLifecycleOwner, Observer { handleDataUser(it) })
         fab.setOnClickListener { startActivity(Intent(activity, ProductActivity::class.java)) }
     }
@@ -68,8 +68,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
 
     override fun onResume() {
         super.onResume()
-        productViewModel.getMyProducts("Bearer ${FruitmanUtil.getToken(activity!!)}")
+        productViewModel.getMyProducts("Bearer ${FruitmanUtil.getToken(requireActivity())}")
     }
 
-    private fun toast(message : String) = Toast.makeText(activity!!, message, Toast.LENGTH_LONG).show()
+    private fun toast(message : String) = Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
 }

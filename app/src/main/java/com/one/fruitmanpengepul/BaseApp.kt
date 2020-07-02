@@ -6,6 +6,7 @@ import com.one.fruitmanpengepul.repositories.OrderRepository
 import com.one.fruitmanpengepul.repositories.ProductRepository
 import com.one.fruitmanpengepul.repositories.UserRepository
 import com.one.fruitmanpengepul.ui.buyer_in_progress_activity.BuyerInProgressViewModel
+import com.one.fruitmanpengepul.ui.register_activity.RegisterViewModel
 import com.one.fruitmanpengepul.ui.seller_in_progress_activity.SellerInProgressViewModel
 import com.one.fruitmanpengepul.ui.waiting_activity.WaitingOrderViewModel
 import com.one.fruitmanpengepul.viewmodels.OrderViewModel
@@ -37,6 +38,7 @@ val repositoryModule = module {
 }
 
 val viewModelModules = module {
+    viewModel { RegisterViewModel(get()) }
     viewModel { ProductViewModel(get()) }
     viewModel { UserViewModel(get()) }
     viewModel { OrderInViewModel(get()) }

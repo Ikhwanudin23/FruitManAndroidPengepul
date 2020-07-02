@@ -1,116 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-            android:id="@+id/linear_profile"
-            android:layout_margin="16dp"
-            android:orientation="vertical"
+    <RelativeLayout
+            android:id="@+id/layoutHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="74dp"
-                android:id="@+id/iv_image"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@color/colorAccent"
-                android:layout_height="74dp"/>
-        <TextView
-                android:id="@+id/tv_name"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center"
-                android:text="Lorem ipsum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:id="@+id/tv_email"
-                android:text="loremipsum@gmail.com"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <com.github.florent37.shapeofview.shapes.ArcView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="0dp"
+                app:shape_arc_height="20dp"
+                app:shape_arc_position="bottom">
 
+            <FrameLayout
+                    android:background="@drawable/background_try"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"/>
+
+        </com.github.florent37.shapeofview.shapes.ArcView>
         <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:orientation="horizontal"
+                android:layout_marginTop="38dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
             <TextView
-                    android:layout_weight="2"
-                    android:text="Telephone"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:textSize="38sp"
+                    android:text="My Profil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+            <LinearLayout
+                    android:id="@+id/linear_profile"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+        
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="74dp"
+                        android:id="@+id/iv_image"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_person"
+                        android:layout_height="74dp"/>
+                <TextView
+                        android:id="@+id/tv_name"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center"
+                        android:text="Lorem ipsum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/tv_email"
+                        android:text="loremipsum@gmail.com"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+        
+                <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+        
+                    <TextView
+                            android:layout_weight="2"
+                            android:text="Telephone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+        
+                    <TextView
+                            android:layout_weight="1"
+                            android:text="090736784"
+                            android:id="@+id/tv_telp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+        
+                </LinearLayout>
+        
+                <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+        
+                    <TextView
+                            android:layout_weight="2"
+                            android:text="alamat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+        
+                    <TextView
+                            android:layout_weight="1"
+                            android:text="alamat"
+                            android:id="@+id/tv_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+        
+                </LinearLayout>
+        
+                <com.google.android.material.button.MaterialButton
+                        android:layout_gravity="center_horizontal"
+                        android:text="update profil"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
             <TextView
-                    android:layout_weight="1"
-                    android:text="090736784"
-                    android:id="@+id/tv_telp"
+                    android:id="@+id/tv_my_product"
+                    android:layout_margin="10dp"
+                    android:layout_below="@id/linear_profile"
+                    android:textSize="28sp"
+                    android:text="Produk Saya"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="10dp"
+                    android:layout_below="@id/tv_my_product"
+                    android:id="@+id/rv_my_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:src="@drawable/ic_add"
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="20dp" />
+            </RelativeLayout>
         </LinearLayout>
 
-        <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <TextView
-                    android:layout_weight="2"
-                    android:text="alamat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            <TextView
-                    android:layout_weight="1"
-                    android:text="alamat"
-                    android:id="@+id/tv_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-                android:layout_gravity="center_horizontal"
-                android:text="update profil"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <TextView
-            android:id="@+id/tv_my_product"
-            android:layout_margin="10dp"
-            android:layout_below="@id/linear_profile"
-            android:textSize="28sp"
-            android:text="Produk Saya"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:layout_margin="10dp"
-            android:layout_below="@id/tv_my_product"
-            android:id="@+id/rv_my_product"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:src="@drawable/ic_add"
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="20dp" />
+    </RelativeLayout>
 
     <ProgressBar
             android:layout_centerInParent="true"

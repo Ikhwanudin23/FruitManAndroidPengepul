@@ -140,4 +140,5 @@
     <string name="title_activity_seller_in_progress">SellerInProgressActivity</string>
     <string name="success_rejected">Pesanan dibatalkan</string>
     <string name="title_activity_buyer_in_progress">BuyerInProgressActivity</string>
+    <string name="hellotext">Hello</string>
 </resources>
